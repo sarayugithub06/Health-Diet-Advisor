@@ -1,10 +1,257 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>Diet Recommendation 💪</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #00ffcc;
+            margin-bottom: 1rem;
+        }
+
+        input, select, button {
+            padding: 0.6rem;
+            margin: 0.4rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #00ffcc;
+            color: black;
+            cursor: pointer;
+        }
+
+        .card {
+            background: #111;
+            padding: 1rem 2rem;
+            margin-top: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 0 10px #00ffcc;
+        }
+
+        .emoji {
+            font-size: 1.5rem;
+            margin-right: 0.5rem;
+        }
+
+        label {
+            display: block;
+            margin-top: 1rem;
+        }
+
+        .diet-block {
+            margin-top: 1.2rem;
+        }
+    </style>
 </head>
 <body>
-$END$
+
+<h1>🌿 Personalized Diet Recommender</h1>
+
+<label>Name: <input type="text" id="name"></label>
+<label>Age: <input type="number" id="age"></label>
+<label>Gender:
+    <select id="gender">
+        <option>Male</option>
+        <option>Female</option>
+        <option>Other</option>
+    </select>
+</label>
+
+<label>Health Issue:
+    <select id="issue">
+        <option value="acidity">Acidity</option>
+        <option value="diabetes">Diabetes</option>
+        <option value="ulcer">Ulcer</option>
+        <option value="gastritis">Gastritis</option>
+        <option value="pcos">PCOS</option>
+        <option value="thyroid">Thyroid</option>
+        <option value="constipation">Constipation</option>
+        <option value="eyeProblems">Eye Problems</option>
+        <option value="kidneyStones">KidneyStones</option>
+        <option value="migraine">Migraine</option>
+        <option value="obesity">Obesity</option>
+        <option value="liverProblems">Liver Problems</option>
+        <option value="skinAllergy">Skin Allergy</option>
+        <option value="lowBp">Low Bp</option>
+
+
+    </select>
+</label>
+
+<button onclick="showDiet()">Get My Diet 💡</button>
+
+<div class="card" id="result" style="display:none;"></div>
+
+<script>
+    const diets = {
+        acidity: {
+            morning: ["Banana 🍌", "Coconut Water 🥥", "Idli with Chutney"],
+            afternoon: ["Plain Dal Rice 🍚", "Boiled Veggies 🥦", "Cucumber 🥒"],
+            snacks: ["Herbal Tea 🍵", "Apple 🍎", "Roasted Makhana"],
+            night: ["Khichdi 🌾", "Lauki Curry 🍲"],
+            smile: ["Acidity? No worry cutie! Swap fire for fiber 🍌🥬 and chill like curd in the fridge!\" ❄️🧊\n" +
+            "\"Skip the spicy gossip and snack on bananas — drama-free stomach incoming!\" 🍌📵\n" +
+            "\"Let’s keep it low-acid and high-vibes only — your tummy deserves a gentle hug! 🫶🍚"]
+        },
+        diabetes: {
+            morning: ["Oats Porridge 🥣", "Boiled Eggs 🍳", "Unsweetened Tea 🍵"],
+            afternoon: ["Multigrain Roti 🌾", "Palak Paneer 🍛", "Salad 🥗"],
+            snacks: ["Buttermilk 🥤", "Sprouts 🫘"],
+            night: ["Vegetable Soup 🥣", "Grilled Paneer 🍢"],
+            smile: ["You’re sweet enough already, skip the sugar! 🍬❌”\n" +
+            "“Walk it off, veggie it up, and smile like you mean it!” 🚶‍♀️🥦😄\n" +
+            "\"Dal, oats, and greens are your sugar squad!\" 🥣💚\n"]
+        },
+        ulcer: {
+            morning: ["Rice Porridge 🍚", "Amla Juice 🍶"],
+            afternoon: ["Boiled Rice 🍛", "Moong Dal 🥣"],
+            snacks: ["Banana 🍌", "Coconut Water 🥥"],
+            night: ["Idli 🌾", "Steamed Veggies 🥬"],
+            smile:["“Your tummy’s not a battleground, feed it peace not spice!” 🍜🕊️\n" +
+            "“Cool foods, calm moods — ulcer-free is the new sexy!” 😎🥒\n" +
+            "\"Boiled rice > drama. Coconut water > chaos. Your tummy deserves a spa day!\" 🥥🛁🍚"]
+        },
+        gastritis: {
+            morning: ["Papaya 🍈", "Ragi Malt 🥣"],
+            afternoon: ["Soft Khichdi 🍲", "Boiled Veggies"],
+            snacks: ["Aloe Vera Juice 🍶", "Roasted Chana"],
+            night: ["Rice Gruel 🍚", "Steamed Dosa"],
+            smile:["\"Too much gas? Not classy, sassy! Let's calm your tummy with khichdi & hugs!\" 🍲🤗\n" +
+            "\"Let’s turn your stomach into a peace zone — no explosions, only digestion!\" ☮️💨\n" +
+            "\"Gastric bossu? Go banana, not balloon! 🍌⛔🎈 Fiber is your superhero!\" 🦸‍♂️🫘"]
+        },
+        pcos: {
+            morning: ["Chia Seed Water 🌱", "Boiled Eggs 🍳"],
+            afternoon: ["Brown Rice 🍚", "Paneer Sabzi 🍛"],
+            snacks: ["Fruit Salad 🍎🍇🍌", "Green Tea 🍵"],
+            night: ["Grilled Chicken 🍗", "Quinoa Khichdi"],
+            smile:["\"No more sugar drama – your ovaries want a spa day with whole grains and green tea!\" 🍵🌾💅"]
+        },
+        heart: {
+            morning: ["Oats with Almond Milk 🥣", "Fruits 🍎"],
+            afternoon: ["Whole Wheat Roti 🌾", "Mixed Veg Curry 🥘"],
+            snacks: ["Walnuts 🌰", "Low-fat Yogurt 🍶"],
+            night: ["Vegetable Soup 🥣", "Boiled Veggies 🥕"],
+            smile:["\"You took my heart… now please help me keep it healthy too 🥺💘"]
+        },
+        anemia: {
+            morning: ["Dates with warm milk 🥛", "Boiled eggs 🥚"],
+            afternoon: ["Spinach dal 🍲", "Beetroot rice 🍚"],
+            snacks: ["Roasted peanuts 🥜", "Jaggery chikki 🍬"],
+            night: ["Ragi dosa 🥞", "Palak curry with chapati 🫓"],
+            smile: ["\"You’re iron-ic! Every time I see you, my energy levels go up 😘💪\""]
+        },
+
+        thyroid: {
+            morning: ["Sprouted moong salad 🥗", "Boiled eggs 🥚"],
+            afternoon: ["Brown rice + dal 🍛", "Vegetable curry 🥦"],
+            snacks: ["Fruit bowl 🍎🍌", "Coconut water 🥥"],
+            night: ["Upma with veggies 🥘", "Broccoli stir fry 🥦"],
+            smile: ["\"My hormones may swing... but my love for you stays constant 💖🧿\""]
+        },
+
+        constipation: {
+            morning: ["Papaya slices 🍈", "Warm lemon water 🍋"],
+            afternoon: ["Mixed veg dal 🌿", "Brown rice 🍚"],
+            snacks: ["Figs and dates 🧺", "Buttermilk 🥛"],
+            night: ["Khichdi with ghee 🍛", "Pumpkin curry 🎃"],
+            smile: ["\"You're the fiber to my life — always helping me move on 😄💩💘\""]
+        },
+
+        eyeProblems: {
+            morning: ["Carrot juice 🥕", "Egg omelette with spinach 🍳"],
+            afternoon: ["Tomato rice 🍅", "Drumstick sambar 🍲"],
+            snacks: ["Dry fruits trail mix 🥜", "Boiled corn 🌽"],
+            night: ["Carrot soup 🥕", "Chapati + lauki sabzi 🫓"],
+            smile: ["\"Every time I see you, I believe love is truly *visible* 😍👁️✨\""]
+        },
+
+        kidneyStones: {
+            morning: ["Barley water 🥤", "Apple slices 🍏"],
+            afternoon: ["Boiled rice + lauki sabzi 🍚", "Cucumber salad 🥒"],
+            snacks: ["Coconut water 🥥", "Banana 🍌"],
+            night: ["Lauki soup 🍲", "Jeera rice + boiled dal 🍛"],
+            smile: ["\"You’re my kidney bean, sweet and perfectly shaped for my heart 🫘💞\""]
+        },
+
+        migraine: {
+            morning: ["Oats with almond milk 🥣", "Banana 🍌"],
+            afternoon: ["Soft phulka 🫓", "Veg khichdi 🍛"],
+            snacks: ["Almonds & pumpkin seeds 🌰", "Chamomile tea 🍵"],
+            night: ["Steamed rice + palak dal 🍚", "Turmeric milk 🥛"],
+            smile: ["\"Even my headache runs away when it hears your name 💊💕\""]
+        },
+
+        obesity: {
+            morning: ["Warm lemon water 🍋", "Sprouts chaat 🫘"],
+            afternoon: ["Grilled veggies + multigrain roti 🥦", "Low-oil dal 🥣"],
+            snacks: ["Roasted makhana 🍘", "Coconut water 🥥"],
+            night: ["Lauki soup 🥣", "1 chapati + stir-fry beans 🫓"],
+            smile: ["\"I may be losing weight, but I’ve gained so much love with you 💃💖\""]
+        },
+
+        liverProblems: {
+            morning: ["Turmeric water 💛", "Boiled papaya 🍈"],
+            afternoon: ["Plain rice 🍚", "Lauki + moong dal 🥬"],
+            snacks: ["Buttermilk 🥛", "Mashed sweet potato 🍠"],
+            night: ["Khichdi + mint chutney 🍲", "Cucumber raita 🥒"],
+            smile: ["\"You detox my life like lemon water detoxes my liver 🧼💚\""]
+        },
+
+        skinAllergy: {
+            morning: ["Neem water 🌿", "Rice flakes with curd 🍚"],
+            afternoon: ["Lauki curry 🎃", "Jeera rice 🍛"],
+            snacks: ["Amla juice 🍹", "Coconut slices 🥥"],
+            night: ["Moong dal soup 🍲", "Curd rice 🍚"],
+            smile: ["\"You’re smoother than aloe vera on my skin... and my soul 🌿💘\""]
+        },
+
+        lowBp: {
+            morning: ["Salted lemon water 🍋🧂", "Banana with honey 🍌🍯"],
+            afternoon: ["Rice + dal + pickle 🍛", "Veg curry 🥕"],
+            snacks: ["Ajwain cookies 🍪", "Salted buttermilk 🥛"],
+            night: ["Ajwain paratha 🫓", "Boiled veggies + banana 🍌"],
+            smile: ["\"My pressure may be low, but my love for you is always HIGH 💘📈\""]
+        }
+
+    };
+
+    function showDiet() {
+        const name = document.getElementById("name").value;
+        const age = document.getElementById("age").value;
+        const gender = document.getElementById("gender").value;
+        const issue = document.getElementById("issue").value;
+        const diet = diets[issue];
+
+        let result = `<h2>Hey My Dear Cutie ${name}! 💬</h2>`;
+
+        result += `<p>Here's your custom diet plan for <strong>${issue.toUpperCase()}</strong> 🩺</p>`;
+        result += `<div class="diet-block"><span class="emoji">🌞</span><strong>Morning:</strong> ${diet.morning.join(", ")}</div>`;
+        result += `<div class="diet-block"><span class="emoji">☀️</span><strong>Afternoon:</strong> ${diet.afternoon.join(", ")}</div>`;
+        result += `<div class="diet-block"><span class="emoji">🍎</span><strong>Snacks:</strong> ${diet.snacks.join(", ")}</div>`;
+        result += `<div class="diet-block"><span class="emoji">🌙</span><strong>Night:</strong> ${diet.night.join(", ")}</div>`;
+        result += `<div class="diet-block"><span class="emoji">😁</span><strong>Smile:</strong> ${diet.smile.join(", ")}</div>`;
+
+        document.getElementById("result").style.display = "block";
+        document.getElementById("result").innerHTML = result;
+    }
+</script>
+
 </body>
 </html>
